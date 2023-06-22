@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\wx_ui">
+      <UniqueIdentifier>{355c4fe7-2e5f-43fd-9adc-ceb636fe4987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\wx_ui">
+      <UniqueIdentifier>{3fc50e76-269b-449c-807a-e7c8908c0555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\others">
+      <UniqueIdentifier>{7533bf3c-0035-4802-826e-8e5917627147}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\others">
+      <UniqueIdentifier>{15b94b54-0cbc-410f-8e51-f14605b4ea09}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\KCPTubeGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\wx_ui\KCPTubeGeneratorUserInput.h">
+      <Filter>Header Files\wx_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\wx_ui\GUI.h">
+      <Filter>Header Files\wx_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\wx_ui\KCPTubeGeneratorEntrance.h">
+      <Filter>Header Files\wx_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\wx_ui\KCPTubeGeneratorStepByStep.h">
+      <Filter>Header Files\wx_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\others\configurations.hpp">
+      <Filter>Header Files\others</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\KCPTubeGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wx_ui\KCPTubeGeneratorUserInput.cpp">
+      <Filter>Source Files\wx_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wx_ui\GUI.cpp">
+      <Filter>Source Files\wx_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wx_ui\KCPTubeGeneratorEntrance.cpp">
+      <Filter>Source Files\wx_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wx_ui\KCPTubeGeneratorStepByStep.cpp">
+      <Filter>Source Files\wx_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\others\configurations.cpp">
+      <Filter>Source Files\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\others\ui_languages.hpp">
+      <Filter>Header Files\others</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="KCPTubeGenerator.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="dpi.manifest" />
+  </ItemGroup>
+</Project>
