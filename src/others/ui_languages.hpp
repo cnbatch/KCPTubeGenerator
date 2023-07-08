@@ -45,7 +45,7 @@ namespace languages
 		encryption_algorithm, encryption_password, udp_timeout, keep_alive, mux_tunnels,
 		stun_server, log_path, kcp_mtu, kcp_profile, kcp_sndwnd, kcp_rcvwnd,
 		kcp_nodelay, kcp_interval, kcp_resend, kcp_nc,
-		outbound_bandwidth, inbound_bandwidth, ipv4_only
+		outbound_bandwidth, inbound_bandwidth, ipv4_only, blast
 	};
 
 	const std::map<entrance_text_id, std::string> entrance_text_id_to_text_chs =
@@ -313,7 +313,8 @@ namespace languages
 		{setting_options_id::kcp_nc, "kcp->nc"},
 		{setting_options_id::outbound_bandwidth, "出站带宽"},
 		{setting_options_id::inbound_bandwidth, "入站带宽"},
-		{setting_options_id::ipv4_only, "仅使用 IPv4"}
+		{setting_options_id::ipv4_only, "仅使用 IPv4"},
+		{setting_options_id::blast, "爆发模式"}
 	};
 
 	const std::map<setting_options_id, std::string> setting_options_id_to_text_cht =
@@ -340,7 +341,8 @@ namespace languages
 		{setting_options_id::kcp_nc, "kcp->nc"},
 		{setting_options_id::outbound_bandwidth, "出站頻寬"},
 		{setting_options_id::inbound_bandwidth, "入站頻寬"},
-		{setting_options_id::ipv4_only, "僅使用 IPv4"}
+		{setting_options_id::ipv4_only, "僅使用 IPv4"},
+		{setting_options_id::blast, "爆發模式"}
 	};
 
 	const std::map<setting_options_id, std::string> setting_options_id_to_text_eng =
@@ -367,7 +369,8 @@ namespace languages
 		{setting_options_id::kcp_nc, "kcp->nc"},
 		{setting_options_id::outbound_bandwidth, "Outbound Bandwidth"},
 		{setting_options_id::inbound_bandwidth, "Inbound Bandwidth"},
-		{setting_options_id::ipv4_only, "IPv4 Only"}
+		{setting_options_id::ipv4_only, "IPv4 Only"},
+		{setting_options_id::blast, "Blast Mode"}
 	};
 
 	const std::map<kcp_mode, std::string> kcp_mode_to_text_chs =

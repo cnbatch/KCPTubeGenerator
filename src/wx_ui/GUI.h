@@ -96,6 +96,7 @@ class UserInput : public wxDialog
 		wxCheckBox* m_checkBox_client_mtu;
 		wxSpinCtrl* m_spinCtrl_client_mtu;
 		wxCheckBox* m_checkBox_client_ipv4_only;
+		wxCheckBox* m_checkBox_client_blast;
 		wxStaticBoxSizer* sbSizer_client_log;
 		wxCheckBox* m_checkBox_client_log_path;
 		wxTextCtrl* m_textCtrl_client_log_path;
@@ -150,6 +151,7 @@ class UserInput : public wxDialog
 		wxCheckBox* m_checkBox_relay_mtu_fc;
 		wxSpinCtrl* m_spinCtrl_relay_mtu_fc;
 		wxCheckBox* m_checkBox_relay_ipv4_only_fc;
+		wxCheckBox* m_checkBox_relay_blast_fc;
 		wxPanel* m_panel_relay_network_ts;
 		wxStaticBoxSizer* sbSizer_relay_network_settings_ts;
 		wxStaticText* m_staticText_relay_destination_address;
@@ -166,6 +168,7 @@ class UserInput : public wxDialog
 		wxCheckBox* m_checkBox_relay_mtu_ts;
 		wxSpinCtrl* m_spinCtrl_relay_mtu_ts;
 		wxCheckBox* m_checkBox_relay_ipv4_only_ts;
+		wxCheckBox* m_checkBox_relay_blast_ts;
 		wxStaticBoxSizer* sbSizer_relay_network_settings;
 		wxStaticText* m_staticText_relay_outbound_bandwidth;
 		wxSpinCtrl* m_spinCtrl_relay_outbound_bandwidth;
@@ -236,6 +239,7 @@ class UserInput : public wxDialog
 		wxCheckBox* m_checkBox_server_mtu;
 		wxSpinCtrl* m_spinCtrl_server_mtu;
 		wxCheckBox* m_checkBox_server_ipv4_only;
+		wxCheckBox* m_checkBox_server_blast;
 		wxStaticBoxSizer* sbSizer_server_stun;
 		wxCheckBox* m_checkBox_server_stun;
 		wxTextCtrl* m_textCtrl_server_stun;

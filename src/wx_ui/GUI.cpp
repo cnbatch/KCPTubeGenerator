@@ -289,8 +289,8 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_checkBox_client_ipv4_only = new wxCheckBox( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxT("ipv4_only"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_client_network_settings->Add( m_checkBox_client_ipv4_only, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
-
-	gSizer_client_network_settings->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_checkBox_client_blast = new wxCheckBox( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxT("blast"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_client_network_settings->Add( m_checkBox_client_blast, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
 
 	sbSizer_client_network_settings->Add( gSizer_client_network_settings, 0, wxEXPAND, 5 );
@@ -618,6 +618,9 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	gSizer_relay_network_settings_fc->Add( 0, 0, 1, wxEXPAND, 5 );
 
+	m_checkBox_relay_blast_fc = new wxCheckBox( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxT("blast"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_relay_network_settings_fc->Add( m_checkBox_relay_blast_fc, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+
 
 	sbSizer_relay_network_settings_fc->Add( gSizer_relay_network_settings_fc, 0, wxEXPAND, 5 );
 
@@ -693,8 +696,8 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_checkBox_relay_ipv4_only_ts = new wxCheckBox( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxT("ipv4_only"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_relay_network_settings_ts->Add( m_checkBox_relay_ipv4_only_ts, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
-
-	gSizer_relay_network_settings_ts->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_checkBox_relay_blast_ts = new wxCheckBox( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxT("blast"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_relay_network_settings_ts->Add( m_checkBox_relay_blast_ts, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
 
 	sbSizer_relay_network_settings_ts->Add( gSizer_relay_network_settings_ts, 0, wxEXPAND, 5 );
@@ -1110,8 +1113,8 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_checkBox_server_ipv4_only = new wxCheckBox( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxT("ipv4_only"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_server_network_settings->Add( m_checkBox_server_ipv4_only, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
-
-	gSizer_server_network_settings->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_checkBox_server_blast = new wxCheckBox( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxT("blast"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_server_network_settings->Add( m_checkBox_server_blast, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
 
 	sbSizer_server_network_settings->Add( gSizer_server_network_settings, 0, wxEXPAND, 5 );
@@ -1339,7 +1342,7 @@ Entrance::Entrance( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_hyperlink_link_to_this_tool = new wxHyperlinkCtrl( m_panel_dialog_entrance, wxID_ANY, wxT("KCPTube Generator"), wxT("https://github.com/cnbatch/KCPTubeGenerator"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	bSizer_entrance_middle->Add( m_hyperlink_link_to_this_tool, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	m_staticText_version = new wxStaticText( m_panel_dialog_entrance, wxID_ANY, wxT("KCPTube v0.3.1 (20230622), KCPTubeGenerator 1.0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText_version = new wxStaticText( m_panel_dialog_entrance, wxID_ANY, wxT("KCPTube v0.3.5 (20230708), KCPTubeGenerator 1.1"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText_version->Wrap( -1 );
 	bSizer_entrance_middle->Add( m_staticText_version, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
