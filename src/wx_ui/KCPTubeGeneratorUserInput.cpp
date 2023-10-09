@@ -786,8 +786,8 @@ void KCPTubeGeneratorUserInput::CreateClientSettingFile()
 	if (m_checkBox_client_ipv4_only->IsChecked())
 		client_settings += "ipv4_only=1\n";
 
-	if (m_checkBox_client_blast->IsChecked())
-		client_settings += "blast=1\n";
+	if (!m_checkBox_client_blast->IsChecked())
+		client_settings += "blast=0\n";
 
 	if (m_choice_client_encryption_algorithm->GetSelection() != 0)
 	{
@@ -892,8 +892,8 @@ void KCPTubeGeneratorUserInput::CreateRelaySettingFile()
 	if (m_checkBox_relay_ipv4_only_fc->IsChecked())
 		relay_listener += "ipv4_only=1\n";
 
-	if (m_checkBox_relay_blast_fc->IsChecked())
-		relay_listener += "blast=1\n";
+	if (!m_checkBox_relay_blast_fc->IsChecked())
+		relay_listener += "blast=0\n";
 
 	// Network Settings (from Client) end
 
@@ -928,8 +928,8 @@ void KCPTubeGeneratorUserInput::CreateRelaySettingFile()
 	if (m_checkBox_relay_ipv4_only_ts->IsChecked())
 		relay_forwarder += "ipv4_only=1\n";
 
-	if (m_checkBox_relay_blast_ts->IsChecked())
-		relay_forwarder += "blast=1\n";
+	if (!m_checkBox_relay_blast_ts->IsChecked())
+		relay_forwarder += "blast=0\n";
 
 	// Network Settings (to SErver) end
 
@@ -1030,8 +1030,8 @@ void KCPTubeGeneratorUserInput::CreateServerSettingFile()
 	if (m_checkBox_server_ipv4_only->IsChecked())
 		server_settings += "ipv4_only=1\n";
 
-	if (m_checkBox_server_blast->IsChecked())
-		server_settings += "blast=1\n";
+	if (!m_checkBox_server_blast->IsChecked())
+		server_settings += "blast=0\n";
 
 	if (m_checkBox_server_stun->IsChecked() && !m_textCtrl_server_stun->IsEmpty())
 		server_settings += ("stun_server=" + m_textCtrl_server_stun->GetValue() + "\n");
