@@ -99,6 +99,7 @@ void KCPTubeGeneratorEntrance::EntranceVerifyFileOnButtonClick( wxCommandEvent& 
 
 	wxString file_path = m_fileDialog.GetPath();
 	std::vector<std::string> lines;
+	std::string current_line;
 	std::ifstream input(file_path.ToStdString());
 	if (!input.good() || !input.is_open())
 	{
@@ -106,10 +107,10 @@ void KCPTubeGeneratorEntrance::EntranceVerifyFileOnButtonClick( wxCommandEvent& 
 		return;
 	}
 
-	std::copy(
-		std::istream_iterator<std::string>(input),
-		std::istream_iterator<std::string>(),
-		std::back_inserter(lines));
+	while (std::getline(input, current_line))
+	{
+		lines.emplace_back(current_line);
+	}
 
 	std::vector<std::string> error_msg;
 	std::string all_errors;

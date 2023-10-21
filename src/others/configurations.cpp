@@ -2,6 +2,7 @@
 
 #include <string>
 #include <regex>
+#include <numeric>
 
 #ifdef _WIN32
 #include <ws2tcpip.h>
@@ -37,6 +38,30 @@ bool is_valid_ip(const std::string &input_string)
 	char buffer[16]{};
 
 	return inet_pton(AF_INET, input_string.c_str(), buffer) > 0 || inet_pton(AF_INET6, input_string.c_str(), buffer) > 0;
+}
+
+// trim from start (in place)
+inline void ltrim(std::string &s)
+{
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](auto ch)
+		{
+			return !std::isspace(ch);
+		}));
+}
+
+// trim from end (in place)
+inline void rtrim(std::string &s)
+{
+	s.erase(std::find_if(s.rbegin(), s.rend(), [](auto ch)
+		{
+			return !std::isspace(ch);
+		}).base(), s.end());
+}
+
+void trim(std::string &s)
+{
+	ltrim(s);
+	rtrim(s);
 }
 
 std::string bandwidth_seletion_to_string(int input_bandwidth, int selected_value)
@@ -249,7 +274,7 @@ user_settings userinput_kcp_profile_get_settings(int selected_value)
 		break;
 	case 8:	// regular3
 		current_settings.kcp_nodelay = 0;
-		current_settings.kcp_interval = 1;
+		current_settings.kcp_interval = 5;
 		current_settings.kcp_resend = 2;
 		current_settings.kcp_nc = 1;
 		current_settings.kcp_sndwnd = 1024;
@@ -257,16 +282,16 @@ user_settings userinput_kcp_profile_get_settings(int selected_value)
 		break;
 	case 9:	// regular4
 		current_settings.kcp_nodelay = 0;
-		current_settings.kcp_interval = 1;
-		current_settings.kcp_resend = 3;
+		current_settings.kcp_interval = 10;
+		current_settings.kcp_resend = 2;
 		current_settings.kcp_nc = 1;
 		current_settings.kcp_sndwnd = 1024;
 		current_settings.kcp_rcvwnd = 1024;
 		break;
 	case 10:	// regular5
 		current_settings.kcp_nodelay = 0;
-		current_settings.kcp_interval = 1;
-		current_settings.kcp_resend = 0;
+		current_settings.kcp_interval = 30;
+		current_settings.kcp_resend = 2;
 		current_settings.kcp_nc = 1;
 		current_settings.kcp_sndwnd = 1024;
 		current_settings.kcp_rcvwnd = 1024;
@@ -398,6 +423,7 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 	std::vector<std::string> error_msg;
 
 	user_settings *current_settings = &current_user_settings;
+	user_settings::user_input_address_mapping *current_mappings_ptr = nullptr;
 
 	for (const std::string &arg : args)
 	{
@@ -406,8 +432,9 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 		auto line = trim_copy_arg.Trim().ToStdString();
 		if (line.empty() || line[0] == '#')
 			continue;
-		auto eq = line.find_first_of("=");
+		auto eq = line.find("=");
 		std::string name = line.substr(0, eq);
+		bool has_point_to = trim_copy_arg.Contains("->");
 		trim_lower_copy = name;
 		trim_lower_copy.Trim();
 		trim_lower_copy.MakeLower();
@@ -417,9 +444,9 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 		std::string original_value;
 		if (eq == std::string::npos)
 		{
-			if (line[0] != '[' || line[line.length() - 1] != ']')
+			if ((line.front() != '[' || line.back() != ']') && !has_point_to)
 			{
-				error_msg.emplace_back("unknow option: " + arg);
+				error_msg.emplace_back("unknow option1: " + arg);
 				continue;
 			}
 		}
@@ -444,10 +471,18 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 				break;
 
 			case strhash("listen_on"):
-				current_settings->listen_on = original_value;
+				if (value == "{}")
+					current_settings->ignore_listen_address = true;
+				else
+					current_settings->listen_on = original_value;
 				break;
 
 			case strhash("listen_port"):
+				if (value == "{}")
+				{
+					current_settings->ignore_listen_port = true;
+					break;
+				}
 				if (auto pos = value.find("-"); pos == std::string::npos)
 				{
 					if (auto port_number = std::stoi(value); port_number > 0 && port_number < USHRT_MAX)
@@ -490,6 +525,11 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 				break;
 
 			case strhash("destination_port"):
+				if (value == "{}")
+				{
+					current_settings->ignore_destination_port = true;
+					break;
+				}
 				if (auto pos = value.find("-"); pos == std::string::npos)
 				{
 					if (auto port_number = std::stoi(value); port_number > 0 && port_number < USHRT_MAX)
@@ -526,7 +566,10 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 
 
 			case strhash("destination_address"):
-				current_settings->destination_address = value;
+				if (value == "{}")
+					current_settings->ignore_destination_address = true;
+				else
+					current_settings->destination_address = value;
 				break;
 
 			case strhash("encryption_password"):
@@ -686,7 +729,7 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 			case strhash("blast"):
 			{
 				bool yes = value == "yes" || value == "true" || value == "1";
-				current_settings->ipv4_only = yes;
+				current_settings->blast = yes;
 				break;
 			}
 
@@ -726,8 +769,62 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 				break;
 			}
 
+			case strhash("[custom_input]"):
+			{
+				if (current_user_settings.mode == running_mode::client)
+				{
+					if (current_user_settings.user_input_mappings == nullptr)
+						current_user_settings.user_input_mappings = std::make_shared<user_settings::user_input_address_mapping>();
+					current_mappings_ptr = current_user_settings.user_input_mappings.get();
+				}
+				else
+				{
+					error_msg.emplace_back("invalid section tag: " + arg);
+				}
+				break;
+			}
+
+			case strhash("[custom_input_tcp]"):
+			{
+				if (current_user_settings.mode == running_mode::client)
+				{
+					if (current_user_settings.user_input_mappings_tcp == nullptr)
+						current_user_settings.user_input_mappings_tcp = std::make_shared<user_settings::user_input_address_mapping>();
+					current_mappings_ptr = current_user_settings.user_input_mappings_tcp.get();
+				}
+				else
+				{
+					error_msg.emplace_back("invalid section tag: " + arg);
+				}
+				break;
+			}
+
+			case strhash("[custom_input_udp]"):
+			{
+				if (current_user_settings.mode == running_mode::client)
+				{
+					if (current_user_settings.user_input_mappings_udp == nullptr)
+						current_user_settings.user_input_mappings_udp = std::make_shared<user_settings::user_input_address_mapping>();
+					current_mappings_ptr = current_user_settings.user_input_mappings_udp.get();
+				}
+				else
+				{
+					error_msg.emplace_back("invalid section tag: " + arg);
+				}
+				break;
+			}
+
 			default:
-				error_msg.emplace_back("unknow option: " + arg);
+				if (!has_point_to)
+					error_msg.emplace_back("unknow option: " + arg);
+			}
+
+			if (has_point_to)
+			{
+				if (current_mappings_ptr != nullptr)
+					parse_custom_input_ip(line, current_mappings_ptr, error_msg);
+				else
+					error_msg.emplace_back("invalid input: '" + arg + "'. Does not belongs to any custom address sections.");
 			}
 		}
 		catch (const std::exception &ex)
@@ -737,6 +834,99 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 	}
 
 	return error_msg;
+}
+
+void parse_custom_input_ip(const std::string &line, user_settings::user_input_address_mapping *mappings_ptr, std::vector<std::string> &error_msg)
+{
+	auto point_to = line.find("->");
+	std::string local_address = line.substr(0, point_to);
+	std::string remote_address = line.substr(point_to + 2);
+	trim(local_address);
+	trim(remote_address);
+
+	std::vector<std::string> error_message_local;
+	std::vector<std::string> error_message_remote;
+	auto [local_ip, local_port] = split_address(local_address, error_message_local);
+	auto [remote_ip, remote_port] = split_address(remote_address, error_message_remote);
+
+	if (!error_message_local.empty() || !error_message_remote.empty() || remote_ip.empty())
+	{
+		if (!error_message_local.empty())
+			error_msg.emplace_back("'" + line + "'" + std::reduce(error_message_local.begin(), error_message_local.end(), std::string(",")));
+		if (!error_message_remote.empty())
+			error_msg.emplace_back("'" + line + "'" + std::reduce(error_message_remote.begin(), error_message_remote.end(), std::string(",")));
+		if (remote_ip.empty())
+			error_msg.emplace_back("'" + line + "' Remote Address can't be empty");
+		return;
+	}
+
+	uint16_t local_port_number = (uint16_t)std::stoi(local_port);
+	uint16_t remote_port_number = (uint16_t)std::stoi(remote_port);
+
+	(*mappings_ptr)[std::pair{ local_ip, local_port_number }] = std::pair{ remote_ip, remote_port_number };
+}
+
+std::pair<std::string, std::string> split_address(const std::string &input_address, std::vector<std::string> &error_msg)
+{
+	auto colon = input_address.rfind(':');
+	if (colon == input_address.npos)
+		return std::pair<std::string, std::string>();
+
+	bool correct_address = false;
+	bool correct_port = false;
+
+	std::string ip_address = input_address.substr(0, colon);
+	std::string ip_port = input_address.substr(colon + 1);
+
+	trim(ip_address);
+	trim(ip_port);
+
+	try
+	{
+		int32_t port_number = std::stoi(ip_port);
+		if (port_number > 0 && port_number < 65536)
+			correct_port = true;
+	}
+	catch (...)
+	{
+		correct_port = false;
+	}
+
+	if (ip_address.size() == 0)
+	{
+		correct_address = true;
+	}
+	else
+	{
+		if (ip_address.front() == '[' || ip_address.back() == ']')
+		{
+			if (ip_address.front() == '[' && ip_address.back() == ']')
+			{
+				ip_address = ip_address.substr(1);
+				ip_address.pop_back();
+
+				correct_address = is_valid_ip(ip_address);
+			}
+		}
+		else
+		{
+			correct_address = is_valid_ip(ip_address);
+		}
+	}
+
+	if (!correct_address)
+	{
+		ip_address.clear();
+		error_msg.emplace_back("Address Incorrect");
+	}
+
+	if (!correct_port)
+	{
+		ip_port.clear();
+		error_msg.emplace_back("Port Number Incorrect");
+	}
+
+	return std::pair{ ip_address, ip_port };
 }
 
 void check_settings(user_settings &current_user_settings, std::vector<std::string> &error_msg)
@@ -779,33 +969,63 @@ void check_settings(user_settings &current_user_settings, std::vector<std::strin
 
 	if (current_user_settings.mode == running_mode::client)
 	{
-		if (current_user_settings.listen_port == 0)
-			error_msg.emplace_back("listen_port is not set");
+		if (current_user_settings.ignore_listen_port || current_user_settings.ignore_listen_address)
+		{
+			current_user_settings.listen_port = 0;
+			current_user_settings.listen_port_start = 0;
+			current_user_settings.listen_port_end = 0;
+			current_user_settings.listen_on.clear();
 
-		if (current_user_settings.listen_port_start > 0)
-			error_msg.emplace_back("listen_port_start should not be set");
+			if (current_user_settings.user_input_mappings == nullptr &&
+				current_user_settings.user_input_mappings_tcp == nullptr &&
+				current_user_settings.user_input_mappings_udp == nullptr)
+				error_msg.emplace_back("custom address section tag is empty");
+		}
+		else
+		{
+			if (current_user_settings.listen_port == 0)
+				error_msg.emplace_back("listen_port is not set");
 
-		if (current_user_settings.listen_port_end > 0)
-			error_msg.emplace_back("listen_port_end should not be set");
+			if (current_user_settings.listen_port_start > 0)
+				error_msg.emplace_back("listen_port_start should not be set");
+
+			if (current_user_settings.listen_port_end > 0)
+				error_msg.emplace_back("listen_port_end should not be set");
+		}
+
+		if (current_user_settings.ignore_destination_address)
+			error_msg.emplace_back("destination_address can't be ignored");
+
+		if (current_user_settings.ignore_destination_port)
+			error_msg.emplace_back("destination_port can't be ignored");
 
 		verify_client_destination(current_user_settings, error_msg);
 	}
 
 	if (current_user_settings.mode == running_mode::server)
 	{
+		if (current_user_settings.ignore_listen_address)
+			error_msg.emplace_back("if listen_address should be ignored, please delete the whole line of listen_address");
+
+		if (current_user_settings.ignore_listen_port)
+			error_msg.emplace_back("listen_port can't be ignored");
+
 		verify_server_listen_port(current_user_settings, error_msg);
 
-		if (current_user_settings.destination_port == 0)
-			error_msg.emplace_back("destination_port is not set");
+		if (!current_user_settings.ignore_destination_address && !current_user_settings.ignore_destination_port)
+		{
+			if (current_user_settings.destination_port == 0)
+				error_msg.emplace_back("destination_port is not set");
 
-		if (current_user_settings.destination_port_start > 0)
-			error_msg.emplace_back("destination_port_start should not be set");
+			if (current_user_settings.destination_port_start > 0)
+				error_msg.emplace_back("destination_port_start should not be set");
 
-		if (current_user_settings.destination_port_end > 0)
-			error_msg.emplace_back("destination_port_end should not be set");
+			if (current_user_settings.destination_port_end > 0)
+				error_msg.emplace_back("destination_port_end should not be set");
 
-		if (current_user_settings.destination_address.empty())
-			error_msg.emplace_back("invalid destination_address setting");
+			if (current_user_settings.destination_address.empty())
+				error_msg.emplace_back("invalid destination_address setting");
+		}
 
 		if (current_user_settings.mux_tunnels > 0)
 			error_msg.emplace_back("mux_tunnels should not be set");

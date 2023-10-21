@@ -15,6 +15,7 @@ enum class encryption_mode { unknow, empty, none, aes_gcm, aes_ocb, chacha20, xc
 
 struct user_settings
 {
+	using user_input_address_mapping = std::map<std::pair<std::string, uint16_t>, std::pair<std::string, uint16_t>>;
 	uint16_t listen_port = 0;
 	uint16_t listen_port_start = 0;
 	uint16_t listen_port_end = 0;
@@ -38,6 +39,11 @@ struct user_settings
 	uint64_t outbound_bandwidth = 0;
 	uint64_t inbound_bandwidth = 0;
 	bool ipv4_only = false;
+	bool blast = false;
+	bool ignore_listen_address = false;
+	bool ignore_listen_port = false;
+	bool ignore_destination_address = false;
+	bool ignore_destination_port = false;
 	wxString listen_on;
 	wxString destination_address;
 	wxString encryption_password;
@@ -47,6 +53,9 @@ struct user_settings
 	wxString log_messages;
 	std::shared_ptr<user_settings> ingress;
 	std::shared_ptr<user_settings> egress;
+	std::shared_ptr<user_input_address_mapping> user_input_mappings;
+	std::shared_ptr<user_input_address_mapping> user_input_mappings_tcp;
+	std::shared_ptr<user_input_address_mapping> user_input_mappings_udp;
 };
 
 bool is_valid_domain(const std::string &input_string);
@@ -73,6 +82,8 @@ std::map<T, wxString> all_std_string_to_wxstring(const std::map<T, std::string> 
 void parse_from_args(const std::vector<std::string> &args, std::vector<std::string> &error_msg);
 std::vector<std::string> parse_running_mode(const std::vector<std::string> &args, user_settings &current_user_settings);
 std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, user_settings &current_user_settings);
+void parse_custom_input_ip(const std::string &line, user_settings::user_input_address_mapping *mappings_ptr, std::vector<std::string> &error_msg);
+std::pair<std::string, std::string> split_address(const std::string &input_address, std::vector<std::string> &error_msg);
 void check_settings(user_settings &current_user_settings, std::vector<std::string> &error_msg);
 void copy_settings(user_settings &inner, user_settings &outter);
 void verify_kcp_settings(user_settings &current_user_settings, std::vector<std::string> &error_msg);
