@@ -26,6 +26,7 @@ class KCPTubeGeneratorStepByStep : public StepByStep
 		void Step3UDPTimeoutOnCheckBox( wxCommandEvent& event );
 		void Step3KeepAliveOnCheckBox( wxCommandEvent& event );
 		void Step3MuxTunnelsOnCheckBox( wxCommandEvent& event );
+		void Step3FECOnCheckBox( wxCommandEvent& event );
 		void Step4SaveFileOnButtonClick( wxCommandEvent& event );
 	public:
 		/** Constructor */
@@ -51,6 +52,7 @@ private:
 	std::map<languages::setting_options_id, wxString> setting_options_id_to_text;
 	std::map<kcp_mode, wxString> kcp_mode_to_text;
 	std::map<encryption_mode, wxString> encryption_mode_to_text;
+
 };
 
 #endif // __KCPTubeGeneratorStepByStep__

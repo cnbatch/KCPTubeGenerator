@@ -43,8 +43,8 @@ namespace languages
 	{
 		listen_on, listen_port, destination_port, destination_address, dport_refresh,
 		encryption_algorithm, encryption_password, udp_timeout, keep_alive, mux_tunnels,
-		stun_server, log_path, kcp_mtu, kcp_profile, kcp_sndwnd, kcp_rcvwnd,
-		kcp_nodelay, kcp_interval, kcp_resend, kcp_nc,
+		stun_server, log_path, mtu, kcp_mtu, kcp_profile, kcp_sndwnd, kcp_rcvwnd,
+		kcp_nodelay, kcp_interval, kcp_resend, kcp_nc, fec, fec_data, fec_redundant,
 		outbound_bandwidth, inbound_bandwidth, ipv4_only, blast
 	};
 
@@ -303,7 +303,8 @@ namespace languages
 		{setting_options_id::mux_tunnels, "多路复用"},
 		{setting_options_id::stun_server, "STUN 服务器"},
 		{setting_options_id::log_path, "日志路径"},
-		{setting_options_id::kcp_mtu, "最大传输单元 (MTU)"},
+		{setting_options_id::mtu, "最大传输单元 (MTU)"},
+		{setting_options_id::kcp_mtu, "KCP MTU，即 fastresend 值"},
 		{setting_options_id::kcp_profile, "KCP 配置"},
 		{setting_options_id::kcp_sndwnd, "KCP 发送窗口"},
 		{setting_options_id::kcp_rcvwnd, "KCP 接收窗口"},
@@ -314,7 +315,10 @@ namespace languages
 		{setting_options_id::outbound_bandwidth, "出站带宽"},
 		{setting_options_id::inbound_bandwidth, "入站带宽"},
 		{setting_options_id::ipv4_only, "仅使用 IPv4"},
-		{setting_options_id::blast, "爆发模式"}
+		{setting_options_id::blast, "爆发模式"},
+		{setting_options_id::fec, "前向纠错 (FEC)"},
+		{setting_options_id::fec_data, "数据量"},
+		{setting_options_id::fec_redundant, "冗余量"}
 	};
 
 	const std::map<setting_options_id, std::string> setting_options_id_to_text_cht =
@@ -331,7 +335,8 @@ namespace languages
 		{setting_options_id::mux_tunnels, "多路複用"},
 		{setting_options_id::stun_server, "STUN 伺服器"},
 		{setting_options_id::log_path, "日誌路徑"},
-		{setting_options_id::kcp_mtu, "最大傳輸單元 (MTU)"},
+		{setting_options_id::mtu, "最大傳輸單元 (MTU)"},
+		{setting_options_id::kcp_mtu, "KCP MTU，即 fastresend 值"},
 		{setting_options_id::kcp_profile, "KCP 配置"},
 		{setting_options_id::kcp_sndwnd, "KCP 發送窗口"},
 		{setting_options_id::kcp_rcvwnd, "KCP 接收窗口"},
@@ -342,7 +347,10 @@ namespace languages
 		{setting_options_id::outbound_bandwidth, "出站頻寬"},
 		{setting_options_id::inbound_bandwidth, "入站頻寬"},
 		{setting_options_id::ipv4_only, "僅使用 IPv4"},
-		{setting_options_id::blast, "爆發模式"}
+		{setting_options_id::blast, "爆發模式"},
+		{setting_options_id::fec, "前向糾錯 (FEC)"},
+		{setting_options_id::fec_data, "資料量"},
+		{setting_options_id::fec_redundant, "冗餘量"}
 	};
 
 	const std::map<setting_options_id, std::string> setting_options_id_to_text_eng =
@@ -359,7 +367,8 @@ namespace languages
 		{setting_options_id::mux_tunnels, "MUX Tunnels"},
 		{setting_options_id::stun_server, "STUN Server"},
 		{setting_options_id::log_path, "Log Path"},
-		{setting_options_id::kcp_mtu, "Maximum Transmission Unit"},
+		{setting_options_id::mtu, "Maximum Transmission Unit"},
+		{setting_options_id::kcp_mtu, "KCP MTU, the value of fastresend"},
 		{setting_options_id::kcp_profile, "KCP Profile"},
 		{setting_options_id::kcp_sndwnd, "KCP Send Window"},
 		{setting_options_id::kcp_rcvwnd, "KCP Receive Window"},
@@ -370,7 +379,10 @@ namespace languages
 		{setting_options_id::outbound_bandwidth, "Outbound Bandwidth"},
 		{setting_options_id::inbound_bandwidth, "Inbound Bandwidth"},
 		{setting_options_id::ipv4_only, "IPv4 Only"},
-		{setting_options_id::blast, "Blast Mode"}
+		{setting_options_id::blast, "Blast Mode"},
+		{setting_options_id::fec, "Forward Error Correction"},
+		{setting_options_id::fec_data, "Data Packets"},
+		{setting_options_id::fec_redundant, "Redundant Packets"}
 	};
 
 	const std::map<kcp_mode, std::string> kcp_mode_to_text_chs =

@@ -26,9 +26,12 @@ struct user_settings
 	uint16_t udp_timeout = 0;	 // seconds
 	uint16_t keep_alive = 0;	// seconds
 	uint16_t mux_tunnels = 0;	// client only
+	uint8_t fec_data = 0;
+	uint8_t fec_redundant = 0;
 	encryption_mode encryption = encryption_mode::empty;
 	running_mode mode = running_mode::unknow;
 	kcp_mode kcp_setting = kcp_mode::unknow;
+	int mtu = -1;
 	int kcp_mtu = -1;
 	int kcp_sndwnd = -1;
 	int kcp_rcvwnd = -1;

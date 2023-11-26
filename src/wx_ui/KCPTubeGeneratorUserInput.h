@@ -20,6 +20,7 @@ class KCPTubeGeneratorUserInput : public UserInput
 	protected:
 		// Handlers for UserInput events.
 		void ClientKCPProfileOnChoice( wxCommandEvent& event );
+		void ClientEncrypitonOnChoice( wxCommandEvent& event );
 		void ClientListenAddressOnCheckBox( wxCommandEvent& event );
 		void ClientDestinationPortOnChoice( wxCommandEvent& event );
 		void ClientDPortRefreshOnCheckBox( wxCommandEvent& event );
@@ -27,8 +28,9 @@ class KCPTubeGeneratorUserInput : public UserInput
 		void ClientKeepAliveOnCheckBox( wxCommandEvent& event );
 		void ClientMuxTunnelsOnCheckBox( wxCommandEvent& event );
 		void ClientMTUOnCheckBox( wxCommandEvent& event );
+		void ClientKCPMTUOnCheckBox( wxCommandEvent& event );
+		void ClientFECOnCheckBox( wxCommandEvent& event );
 		void ClientIPv4OnlyOnCheckBox( wxCommandEvent& event );
-		void ClientEncrypitonOnChoice( wxCommandEvent& event );
 		void ClientLogPathOnCheckBox( wxCommandEvent& event );
 		void ClientVerifyAndSaveOnButtonClick( wxCommandEvent& event );
 		void RelayFromClientKCPProfileOnChoice( wxCommandEvent& event );
@@ -38,25 +40,31 @@ class KCPTubeGeneratorUserInput : public UserInput
 		void RelayFromClientUDPTimeoutOnCheckBox( wxCommandEvent& event );
 		void RelayFromClientKeepAliveOnCheckBox( wxCommandEvent& event );
 		void RelayFromClientMTUOnCheckBox( wxCommandEvent& event );
+		void RelayFromClientKCPMTUOnCheckBox( wxCommandEvent& event );
+		void RelayFromClientFECOnCheckBox( wxCommandEvent& event );
 		void RelayFromClientIPv4OnlyOnCheckBox( wxCommandEvent& event );
 		void RelayDestinationPortOnChoice( wxCommandEvent& event );
 		void RelayDPortRefreshOnCheckBox( wxCommandEvent& event );
 		void RelayToServerUDPTimeoutOnCheckBox( wxCommandEvent& event );
 		void RelayToServerKeepAliveOnCheckBox( wxCommandEvent& event );
 		void RelayToServerMTUOnCheckBox( wxCommandEvent& event );
+		void RelayToServerKCPMTUOnCheckBox( wxCommandEvent& event );
+		void RelayToServerFECOnCheckBox( wxCommandEvent& event );
 		void RelayToServerIPv4OnlyOnCheckBox( wxCommandEvent& event );
 		void RelayFromClientEncrypitonOnChoice( wxCommandEvent& event );
 		void RelayToServerEncrypitonOnChoice( wxCommandEvent& event );
 		void RelayVerifyAndSaveOnButtonClick( wxCommandEvent& event );
 		void RelayKCPProfileOnChoice( wxCommandEvent& event );
+		void ServerEncrypitonOnChoice( wxCommandEvent& event );
 		void ServerListenAddressOnCheckBox( wxCommandEvent& event );
 		void ServerUDPTimeoutOnCheckBox( wxCommandEvent& event );
 		void ServerKeepAliveOnCheckBox( wxCommandEvent& event );
 		void ServerMTUOnCheckBox( wxCommandEvent& event );
+		void ServerKCPMTUOnCheckBox( wxCommandEvent& event );
+		void ServerFECOnCheckBox( wxCommandEvent& event );
 		void ServerIPv4OnlyOnCheckBox( wxCommandEvent& event );
 		void ServerStunServerOnCheckBox( wxCommandEvent& event );
 		void ServerLogPathOnCheckBox( wxCommandEvent& event );
-		void ServerEncrypitonOnChoice( wxCommandEvent& event );
 		void ServerVerifyAndSaveOnButtonClick( wxCommandEvent& event );
 	public:
 		/** Constructor */
@@ -95,6 +103,7 @@ private:
 	std::map<languages::setting_options_id, wxString> setting_options_id_to_text;
 	std::map<kcp_mode, wxString> kcp_mode_to_text;
 	std::map<encryption_mode, wxString> encryption_mode_to_text;
+
 };
 
 #endif // __KCPTubeGeneratorUserInput__

@@ -286,6 +286,35 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	gSizer_client_network_settings->Add( m_spinCtrl_client_mtu, 0, wxALL, 5 );
 
+	m_checkBox_client_kcp_mtu = new wxCheckBox( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxT("MTU (KCP)"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_client_network_settings->Add( m_checkBox_client_kcp_mtu, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_spinCtrl_client_kcp_mtu = new wxSpinCtrl( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 32767, 1440 );
+	m_spinCtrl_client_kcp_mtu->Enable( false );
+
+	gSizer_client_network_settings->Add( m_spinCtrl_client_kcp_mtu, 0, wxALL, 5 );
+
+	m_checkBox_client_fec = new wxCheckBox( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxT("FEC"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_client_network_settings->Add( m_checkBox_client_fec, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxBoxSizer* bSizer_client_fec;
+	bSizer_client_fec = new wxBoxSizer( wxHORIZONTAL );
+
+	m_spinCtrl_client_fec_data = new wxSpinCtrl( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 20 );
+	m_spinCtrl_client_fec_data->Enable( false );
+	m_spinCtrl_client_fec_data->SetToolTip( wxT("Data") );
+
+	bSizer_client_fec->Add( m_spinCtrl_client_fec_data, 0, wxALL, 5 );
+
+	m_spinCtrl_client_fec_redundant = new wxSpinCtrl( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 4 );
+	m_spinCtrl_client_fec_redundant->Enable( false );
+	m_spinCtrl_client_fec_redundant->SetToolTip( wxT("Redundant") );
+
+	bSizer_client_fec->Add( m_spinCtrl_client_fec_redundant, 0, wxALL, 5 );
+
+
+	gSizer_client_network_settings->Add( bSizer_client_fec, 1, wxEXPAND, 5 );
+
 	m_checkBox_client_ipv4_only = new wxCheckBox( sbSizer_client_network_settings->GetStaticBox(), wxID_ANY, wxT("ipv4_only"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_client_network_settings->Add( m_checkBox_client_ipv4_only, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
@@ -607,10 +636,39 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_checkBox_relay_mtu_fc = new wxCheckBox( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxT("MTU"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_relay_network_settings_fc->Add( m_checkBox_relay_mtu_fc, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
-	m_spinCtrl_relay_mtu_fc = new wxSpinCtrl( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 32767, 0 );
+	m_spinCtrl_relay_mtu_fc = new wxSpinCtrl( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 32767, 1440 );
 	m_spinCtrl_relay_mtu_fc->Enable( false );
 
 	gSizer_relay_network_settings_fc->Add( m_spinCtrl_relay_mtu_fc, 0, wxALL, 5 );
+
+	m_checkBox_relay_kcp_mtu_fc = new wxCheckBox( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxT("MTU (KCP)"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_relay_network_settings_fc->Add( m_checkBox_relay_kcp_mtu_fc, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_spinCtrl_relay_kcp_mtu_fc = new wxSpinCtrl( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 32767, 1440 );
+	m_spinCtrl_relay_kcp_mtu_fc->Enable( false );
+
+	gSizer_relay_network_settings_fc->Add( m_spinCtrl_relay_kcp_mtu_fc, 0, wxALL, 5 );
+
+	m_checkBox_relay_fec_fc = new wxCheckBox( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxT("FEC"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_relay_network_settings_fc->Add( m_checkBox_relay_fec_fc, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxBoxSizer* bSizer_relay_fec_fc;
+	bSizer_relay_fec_fc = new wxBoxSizer( wxHORIZONTAL );
+
+	m_spinCtrl_relay_fec_data_fc = new wxSpinCtrl( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 20 );
+	m_spinCtrl_relay_fec_data_fc->Enable( false );
+	m_spinCtrl_relay_fec_data_fc->SetToolTip( wxT("Data") );
+
+	bSizer_relay_fec_fc->Add( m_spinCtrl_relay_fec_data_fc, 0, wxALL, 5 );
+
+	m_spinCtrl_relay_fec_redundant_fc = new wxSpinCtrl( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 4 );
+	m_spinCtrl_relay_fec_redundant_fc->Enable( false );
+	m_spinCtrl_relay_fec_redundant_fc->SetToolTip( wxT("Redundant") );
+
+	bSizer_relay_fec_fc->Add( m_spinCtrl_relay_fec_redundant_fc, 0, wxALL, 5 );
+
+
+	gSizer_relay_network_settings_fc->Add( bSizer_relay_fec_fc, 1, wxEXPAND, 5 );
 
 	m_checkBox_relay_ipv4_only_fc = new wxCheckBox( sbSizer_relay_network_settings_fc->GetStaticBox(), wxID_ANY, wxT("ipv4_only"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_relay_network_settings_fc->Add( m_checkBox_relay_ipv4_only_fc, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
@@ -692,6 +750,35 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_spinCtrl_relay_mtu_ts->Enable( false );
 
 	gSizer_relay_network_settings_ts->Add( m_spinCtrl_relay_mtu_ts, 0, wxALL, 5 );
+
+	m_checkBox_relay_kcp_mtu_ts = new wxCheckBox( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxT("MTU (KCP)"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_relay_network_settings_ts->Add( m_checkBox_relay_kcp_mtu_ts, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_spinCtrl_relay_kcp_mtu_ts = new wxSpinCtrl( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 32767, 1440 );
+	m_spinCtrl_relay_kcp_mtu_ts->Enable( false );
+
+	gSizer_relay_network_settings_ts->Add( m_spinCtrl_relay_kcp_mtu_ts, 0, wxALL, 5 );
+
+	m_checkBox_relay_fec_ts = new wxCheckBox( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxT("FEC"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_relay_network_settings_ts->Add( m_checkBox_relay_fec_ts, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxBoxSizer* bSizer_relay_fec_ts;
+	bSizer_relay_fec_ts = new wxBoxSizer( wxHORIZONTAL );
+
+	m_spinCtrl_relay_fec_data_ts = new wxSpinCtrl( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 20 );
+	m_spinCtrl_relay_fec_data_ts->Enable( false );
+	m_spinCtrl_relay_fec_data_ts->SetToolTip( wxT("Data") );
+
+	bSizer_relay_fec_ts->Add( m_spinCtrl_relay_fec_data_ts, 0, wxALL, 5 );
+
+	m_spinCtrl_relay_fec_redundant_ts = new wxSpinCtrl( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 4 );
+	m_spinCtrl_relay_fec_redundant_ts->Enable( false );
+	m_spinCtrl_relay_fec_redundant_ts->SetToolTip( wxT("Redundant") );
+
+	bSizer_relay_fec_ts->Add( m_spinCtrl_relay_fec_redundant_ts, 0, wxALL, 5 );
+
+
+	gSizer_relay_network_settings_ts->Add( bSizer_relay_fec_ts, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_checkBox_relay_ipv4_only_ts = new wxCheckBox( sbSizer_relay_network_settings_ts->GetStaticBox(), wxID_ANY, wxT("ipv4_only"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_relay_network_settings_ts->Add( m_checkBox_relay_ipv4_only_ts, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
@@ -1110,6 +1197,33 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	gSizer_server_network_settings->Add( m_spinCtrl_server_mtu, 0, wxALL, 5 );
 
+	m_checkBox_server_kcp_mtu = new wxCheckBox( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxT("MTU (KCP)"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_server_network_settings->Add( m_checkBox_server_kcp_mtu, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_spinCtrl_server_kcp_mtu = new wxSpinCtrl( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 32767, 1440 );
+	m_spinCtrl_server_kcp_mtu->Enable( false );
+
+	gSizer_server_network_settings->Add( m_spinCtrl_server_kcp_mtu, 0, wxALL, 5 );
+
+	m_checkBox_server_fec = new wxCheckBox( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxT("FEC"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_server_network_settings->Add( m_checkBox_server_fec, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxBoxSizer* bSizer_server_fec;
+	bSizer_server_fec = new wxBoxSizer( wxHORIZONTAL );
+
+	m_spinCtrl_server_fec_data = new wxSpinCtrl( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 20 );
+	m_spinCtrl_server_fec_data->Enable( false );
+
+	bSizer_server_fec->Add( m_spinCtrl_server_fec_data, 0, wxALL, 5 );
+
+	m_spinCtrl_server_fec_redundant = new wxSpinCtrl( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 4 );
+	m_spinCtrl_server_fec_redundant->Enable( false );
+
+	bSizer_server_fec->Add( m_spinCtrl_server_fec_redundant, 0, wxALL, 5 );
+
+
+	gSizer_server_network_settings->Add( bSizer_server_fec, 1, wxEXPAND, 5 );
+
 	m_checkBox_server_ipv4_only = new wxCheckBox( sbSizer_server_network_settings->GetStaticBox(), wxID_ANY, wxT("ipv4_only"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer_server_network_settings->Add( m_checkBox_server_ipv4_only, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
@@ -1212,6 +1326,8 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_checkBox_client_keep_alive->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_client_mux_tunnels->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientMuxTunnelsOnCheckBox ), NULL, this );
 	m_checkBox_client_mtu->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientMTUOnCheckBox ), NULL, this );
+	m_checkBox_client_kcp_mtu->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_client_fec->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientFECOnCheckBox ), NULL, this );
 	m_checkBox_client_ipv4_only->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientIPv4OnlyOnCheckBox ), NULL, this );
 	m_checkBox_client_log_path->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientLogPathOnCheckBox ), NULL, this );
 	m_button_client_save->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserInput::ClientVerifyAndSaveOnButtonClick ), NULL, this );
@@ -1222,12 +1338,16 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_checkBox_relay_udp_timeout_fc->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientUDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_relay_keep_alive_fc->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_relay_mtu_fc->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_kcp_mtu_fc->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_fec_fc->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientFECOnCheckBox ), NULL, this );
 	m_checkBox_relay_ipv4_only_fc->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientIPv4OnlyOnCheckBox ), NULL, this );
 	m_choice_relay_destination_port->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( UserInput::RelayDestinationPortOnChoice ), NULL, this );
 	m_checkBox_relay_dport_refresh->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayDPortRefreshOnCheckBox ), NULL, this );
 	m_checkBox_relay_udp_timeout_ts->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerUDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_relay_keep_alive_ts->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_relay_mtu_ts->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_kcp_mtu_ts->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_fec_ts->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerFECOnCheckBox ), NULL, this );
 	m_checkBox_relay_ipv4_only_ts->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerIPv4OnlyOnCheckBox ), NULL, this );
 	m_choice_relay_encryption_algorithm_fc->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( UserInput::RelayFromClientEncrypitonOnChoice ), NULL, this );
 	m_choice_relay_encryption_algorithm_ts->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( UserInput::RelayToServerEncrypitonOnChoice ), NULL, this );
@@ -1238,6 +1358,8 @@ UserInput::UserInput( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_checkBox_server_udp_timeout->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerUDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_server_keep_alive->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_server_mtu->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerMTUOnCheckBox ), NULL, this );
+	m_checkBox_server_kcp_mtu->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_server_fec->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerFECOnCheckBox ), NULL, this );
 	m_checkBox_server_ipv4_only->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerIPv4OnlyOnCheckBox ), NULL, this );
 	m_checkBox_server_stun->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerStunServerOnCheckBox ), NULL, this );
 	m_checkBox_server_log_path->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerLogPathOnCheckBox ), NULL, this );
@@ -1256,6 +1378,8 @@ UserInput::~UserInput()
 	m_checkBox_client_keep_alive->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_client_mux_tunnels->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientMuxTunnelsOnCheckBox ), NULL, this );
 	m_checkBox_client_mtu->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientMTUOnCheckBox ), NULL, this );
+	m_checkBox_client_kcp_mtu->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_client_fec->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientFECOnCheckBox ), NULL, this );
 	m_checkBox_client_ipv4_only->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientIPv4OnlyOnCheckBox ), NULL, this );
 	m_checkBox_client_log_path->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ClientLogPathOnCheckBox ), NULL, this );
 	m_button_client_save->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserInput::ClientVerifyAndSaveOnButtonClick ), NULL, this );
@@ -1266,12 +1390,16 @@ UserInput::~UserInput()
 	m_checkBox_relay_udp_timeout_fc->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientUDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_relay_keep_alive_fc->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_relay_mtu_fc->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_kcp_mtu_fc->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_fec_fc->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientFECOnCheckBox ), NULL, this );
 	m_checkBox_relay_ipv4_only_fc->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayFromClientIPv4OnlyOnCheckBox ), NULL, this );
 	m_choice_relay_destination_port->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( UserInput::RelayDestinationPortOnChoice ), NULL, this );
 	m_checkBox_relay_dport_refresh->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayDPortRefreshOnCheckBox ), NULL, this );
 	m_checkBox_relay_udp_timeout_ts->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerUDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_relay_keep_alive_ts->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_relay_mtu_ts->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_kcp_mtu_ts->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_relay_fec_ts->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerFECOnCheckBox ), NULL, this );
 	m_checkBox_relay_ipv4_only_ts->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::RelayToServerIPv4OnlyOnCheckBox ), NULL, this );
 	m_choice_relay_encryption_algorithm_fc->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( UserInput::RelayFromClientEncrypitonOnChoice ), NULL, this );
 	m_choice_relay_encryption_algorithm_ts->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( UserInput::RelayToServerEncrypitonOnChoice ), NULL, this );
@@ -1282,6 +1410,8 @@ UserInput::~UserInput()
 	m_checkBox_server_udp_timeout->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerUDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_server_keep_alive->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerKeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_server_mtu->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerMTUOnCheckBox ), NULL, this );
+	m_checkBox_server_kcp_mtu->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerKCPMTUOnCheckBox ), NULL, this );
+	m_checkBox_server_fec->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerFECOnCheckBox ), NULL, this );
 	m_checkBox_server_ipv4_only->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerIPv4OnlyOnCheckBox ), NULL, this );
 	m_checkBox_server_stun->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerStunServerOnCheckBox ), NULL, this );
 	m_checkBox_server_log_path->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( UserInput::ServerLogPathOnCheckBox ), NULL, this );
@@ -1342,7 +1472,7 @@ Entrance::Entrance( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_hyperlink_link_to_this_tool = new wxHyperlinkCtrl( m_panel_dialog_entrance, wxID_ANY, wxT("KCPTube Generator"), wxT("https://github.com/cnbatch/KCPTubeGenerator"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	bSizer_entrance_middle->Add( m_hyperlink_link_to_this_tool, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	m_staticText_version = new wxStaticText( m_panel_dialog_entrance, wxID_ANY, wxT("KCPTube v0.4.0 (20231021), KCPTubeGenerator 1.3"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText_version = new wxStaticText( m_panel_dialog_entrance, wxID_ANY, wxT("KCPTube v0.5.0 (20231126), KCPTubeGenerator 1.4"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText_version->Wrap( -1 );
 	bSizer_entrance_middle->Add( m_staticText_version, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -1623,6 +1753,27 @@ StepByStep::StepByStep( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	gSizer_stepbystep_s3_optionals->Add( m_spinCtrl_sbs_s3_mux_tunnels, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
+	m_checkBox_sbs_s3_fec = new wxCheckBox( sbSizer_stepbystep_s3->GetStaticBox(), wxID_ANY, wxT("FEC"), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer_stepbystep_s3_optionals->Add( m_checkBox_sbs_s3_fec, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxBoxSizer* bSizer_sbs_s3_fec;
+	bSizer_sbs_s3_fec = new wxBoxSizer( wxHORIZONTAL );
+
+	m_spinCtrl_sbs_s3_fec_data = new wxSpinCtrl( sbSizer_stepbystep_s3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 20 );
+	m_spinCtrl_sbs_s3_fec_data->Enable( false );
+	m_spinCtrl_sbs_s3_fec_data->SetToolTip( wxT("Data") );
+
+	bSizer_sbs_s3_fec->Add( m_spinCtrl_sbs_s3_fec_data, 0, wxALL, 5 );
+
+	m_spinCtrl_sbs_s3_fec_redundant = new wxSpinCtrl( sbSizer_stepbystep_s3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 255, 4 );
+	m_spinCtrl_sbs_s3_fec_redundant->Enable( false );
+	m_spinCtrl_sbs_s3_fec_redundant->SetToolTip( wxT("Redundant") );
+
+	bSizer_sbs_s3_fec->Add( m_spinCtrl_sbs_s3_fec_redundant, 0, wxALL, 5 );
+
+
+	gSizer_stepbystep_s3_optionals->Add( bSizer_sbs_s3_fec, 1, wxEXPAND, 5 );
+
 
 	sbSizer_stepbystep_s3->Add( gSizer_stepbystep_s3_optionals, 1, wxEXPAND, 5 );
 
@@ -1696,6 +1847,7 @@ StepByStep::StepByStep( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_checkBox_sbs_s3_udp_timtout->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3UDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_sbs_s3_keepalive->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3KeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_sbs_s3_mux_tunnels->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3MuxTunnelsOnCheckBox ), NULL, this );
+	m_checkBox_sbs_s3_fec->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3FECOnCheckBox ), NULL, this );
 	m_button_sbs_s4_save_file->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StepByStep::Step4SaveFileOnButtonClick ), NULL, this );
 }
 
@@ -1708,6 +1860,7 @@ StepByStep::~StepByStep()
 	m_checkBox_sbs_s3_udp_timtout->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3UDPTimeoutOnCheckBox ), NULL, this );
 	m_checkBox_sbs_s3_keepalive->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3KeepAliveOnCheckBox ), NULL, this );
 	m_checkBox_sbs_s3_mux_tunnels->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3MuxTunnelsOnCheckBox ), NULL, this );
+	m_checkBox_sbs_s3_fec->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( StepByStep::Step3FECOnCheckBox ), NULL, this );
 	m_button_sbs_s4_save_file->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StepByStep::Step4SaveFileOnButtonClick ), NULL, this );
 
 }

@@ -135,16 +135,16 @@ std::string steps_kcp_profile_to_string(int selected_value)
 	switch (selected_value)
 	{
 	case 0:
-		kcp_profile = "fast3";
+		kcp_profile = "fast2";
 		break;
 	case 1:
-		kcp_profile = "fast4";
+		kcp_profile = "fast6";
 		break;
 	case 2:
-		kcp_profile = "regular4";
+		kcp_profile = "regular2";
 		break;
 	case 3:
-		kcp_profile = "regular5";
+		kcp_profile = "regular3";
 		break;
 	default:
 		break;
@@ -647,6 +647,10 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 				}
 				break;
 
+			case strhash("mtu"):
+				current_settings->mtu = std::stoi(value);
+				break;
+
 			case strhash("kcp_mtu"):
 				current_settings->kcp_mtu = std::stoi(value);
 				break;
@@ -732,6 +736,41 @@ std::vector<std::string> parse_the_rest(const std::vector<std::string> &args, us
 				current_settings->blast = yes;
 				break;
 			}
+
+			case strhash("fec"):
+				if (auto pos = value.find(":"); pos == std::string::npos)
+				{
+					error_msg.emplace_back("invalid fec format: " + value);
+				}
+				else
+				{
+					std::string fec_data_part = value.substr(0, pos);
+					std::string fec_redundant_part = value.substr(pos + 1);
+					trim(fec_data_part);
+					trim(fec_redundant_part);
+
+					if (fec_data_part.empty() || fec_redundant_part.empty())
+					{
+						error_msg.emplace_back("invalid fec setting: " + value);
+						break;
+					}
+
+					int fec_data_number = std::stoi(fec_data_part);
+					int fec_redundant_number = std::stoi(fec_redundant_part);
+
+					if (fec_data_number > 0 && fec_data_number <= UCHAR_MAX)
+						current_settings->fec_data = static_cast<uint8_t>(fec_data_number);
+
+					if (fec_redundant_number > 0 && fec_redundant_number <= UCHAR_MAX)
+						current_settings->fec_redundant = static_cast<uint8_t>(fec_redundant_number);
+
+					if (int sum = fec_data_number + fec_redundant_number; sum > UCHAR_MAX)
+						error_msg.emplace_back("the sum of fec value is too large: " + std::to_string(sum) + " (" + arg + ")");
+
+					if (current_settings->fec_data == 0 || current_settings->fec_redundant == 0)
+						current_settings->fec_data = current_settings->fec_redundant = 0;
+				}
+				break;
 
 			case strhash("[listener]"):
 			{
@@ -1060,6 +1099,15 @@ void check_settings(user_settings &current_user_settings, std::vector<std::strin
 
 void copy_settings(user_settings &inner, user_settings &outter)
 {
+	if (outter.mtu > 0)
+		inner.mtu = outter.mtu;
+
+	if (outter.fec_data > 0)
+		inner.fec_data = outter.fec_data;
+
+	if (outter.fec_redundant > 0)
+		inner.fec_redundant = outter.fec_redundant;
+
 	if (outter.kcp_setting != kcp_mode::unknow)
 		inner.kcp_setting = outter.kcp_setting;
 

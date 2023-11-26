@@ -39,6 +39,12 @@ void KCPTubeGeneratorStepByStep::Step3MuxTunnelsOnCheckBox(wxCommandEvent& event
 	m_spinCtrl_sbs_s3_mux_tunnels->Enable(m_checkBox_sbs_s3_mux_tunnels->IsChecked());
 }
 
+void KCPTubeGeneratorStepByStep::Step3FECOnCheckBox(wxCommandEvent& event)
+{
+	m_spinCtrl_sbs_s3_fec_data->Enable(m_checkBox_sbs_s3_fec->IsChecked());
+	m_spinCtrl_sbs_s3_fec_redundant->Enable(m_checkBox_sbs_s3_fec->IsChecked());
+}
+
 void KCPTubeGeneratorStepByStep::Step4SaveFileOnButtonClick(wxCommandEvent& event)
 {
 	wxString client_file_path = m_filePicker_sbs_s4_client->GetPath();
@@ -55,6 +61,37 @@ void KCPTubeGeneratorStepByStep::Step4SaveFileOnButtonClick(wxCommandEvent& even
 		CreateUserSettingFile();
 }
 
+
+bool KCPTubeGeneratorStepByStep::VerifyUserSelections()
+{
+	wxString input_address = m_textCtrl_sbs_s2_server_address->GetValue();
+	std::string input_address_std = input_address.ToStdString();
+	if (!is_valid_domain(input_address_std) && !is_valid_ip(input_address_std))
+	{
+		wxMessageBox(input_address + steps_text_id_to_text[languages::steps_text_id::address_not_valid],
+			steps_text_id_to_text[languages::steps_text_id::incorrect_server_address],
+			wxICON_EXCLAMATION, this);
+		return false;
+	}
+
+	if (m_spinCtrl_sbs_s2_server_port1->GetValue() > m_spinCtrl_sbs_s2_server_port2->GetValue())
+	{
+		wxMessageBox(steps_text_id_to_text[languages::steps_text_id::end_port_larger],
+			steps_text_id_to_text[languages::steps_text_id::port_range_wrong],
+			wxICON_EXCLAMATION, this);
+		return false;
+	}
+
+	if (m_choice_sbs_s2_encryption->GetSelection() != 0 && m_textCtrl_sbs_s2_password->IsEmpty())
+	{
+		wxMessageBox(steps_text_id_to_text[languages::steps_text_id::please_input_password],
+			steps_text_id_to_text[languages::steps_text_id::password_not_set],
+			wxICON_EXCLAMATION, this);
+		return false;
+	}
+
+	return true;
+}
 
 void KCPTubeGeneratorStepByStep::PutTextOnScreen()
 {
@@ -118,11 +155,12 @@ void KCPTubeGeneratorStepByStep::PutTextOnScreen()
 	m_staticText_sbs_s2_password->SetLabelText(setting_options_id_to_text[languages::setting_options_id::encryption_password]);
 	m_staticText_sbs_s2_outbound_bandwidth->SetLabelText(setting_options_id_to_text[languages::setting_options_id::outbound_bandwidth]);
 	m_staticText_sbs_s2_inbound_bandwidth->SetLabelText(setting_options_id_to_text[languages::setting_options_id::inbound_bandwidth]);
-	m_checkBox_sbs_s3_mtu->SetLabelText(setting_options_id_to_text[languages::setting_options_id::kcp_mtu]);
+	m_checkBox_sbs_s3_mtu->SetLabelText(setting_options_id_to_text[languages::setting_options_id::mtu]);
 	m_checkBox_sbs_s3_dport_refresh->SetLabelText(setting_options_id_to_text[languages::setting_options_id::dport_refresh]);
 	m_checkBox_sbs_s3_udp_timtout->SetLabelText(setting_options_id_to_text[languages::setting_options_id::udp_timeout]);
 	m_checkBox_sbs_s3_keepalive->SetLabelText(setting_options_id_to_text[languages::setting_options_id::keep_alive]);
 	m_checkBox_sbs_s3_mux_tunnels->SetLabelText(setting_options_id_to_text[languages::setting_options_id::mux_tunnels]);
+	m_checkBox_sbs_s3_fec->SetLabelText(setting_options_id_to_text[languages::setting_options_id::fec]);
 	m_button_sbs_s4_save_file->SetLabelText(steps_text_id_to_text[languages::steps_text_id::save_button]);
 	m_staticText_sbs_s4_client->SetLabelText(steps_text_id_to_text[languages::steps_text_id::client_conf_path]);
 	m_staticText_sbs_s4_server->SetLabelText(steps_text_id_to_text[languages::steps_text_id::server_conf_path]);
@@ -132,54 +170,9 @@ void KCPTubeGeneratorStepByStep::PutTextOnScreen()
 	m_choice_sbs_s2_kcp->SetString(2, steps_text_id_to_text[languages::steps_text_id::regular_mode_high_loss]);
 	m_choice_sbs_s2_kcp->SetString(3, steps_text_id_to_text[languages::steps_text_id::regular_mode_low_loss]);
 	m_choice_sbs_s2_encryption->SetString(0, encryption_mode_to_text[encryption_mode::none]);
-}
 
-void KCPTubeGeneratorStepByStep::AdjustUI()
-{
-	m_checkBox_sbs_s3_mtu->Layout();
-	m_checkBox_sbs_s3_mtu->Fit();
-	m_checkBox_sbs_s3_dport_refresh->Layout();
-	m_checkBox_sbs_s3_dport_refresh->Fit();
-	m_checkBox_sbs_s3_udp_timtout->Layout();
-	m_checkBox_sbs_s3_udp_timtout->Fit();
-	m_checkBox_sbs_s3_keepalive->Layout();
-	m_checkBox_sbs_s3_keepalive->Fit();
-	m_checkBox_sbs_s3_mux_tunnels->Layout();
-	m_checkBox_sbs_s3_mux_tunnels->Fit();
-
-	Layout();
-	Fit();
-}
-
-bool KCPTubeGeneratorStepByStep::VerifyUserSelections()
-{
-	wxString input_address = m_textCtrl_sbs_s2_server_address->GetValue();
-	std::string input_address_std = input_address.ToStdString();
-	if (!is_valid_domain(input_address_std) && !is_valid_ip(input_address_std))
-	{
-		wxMessageBox(input_address + steps_text_id_to_text[languages::steps_text_id::address_not_valid],
-			steps_text_id_to_text[languages::steps_text_id::incorrect_server_address],
-			wxICON_EXCLAMATION, this);
-		return false;
-	}
-
-	if (m_spinCtrl_sbs_s2_server_port1->GetValue() > m_spinCtrl_sbs_s2_server_port2->GetValue())
-	{
-		wxMessageBox(steps_text_id_to_text[languages::steps_text_id::end_port_larger],
-			steps_text_id_to_text[languages::steps_text_id::port_range_wrong],
-			wxICON_EXCLAMATION, this);
-		return false;
-	}
-
-	if (m_choice_sbs_s2_encryption->GetSelection() != 0 && m_textCtrl_sbs_s2_password->IsEmpty())
-	{
-		wxMessageBox(steps_text_id_to_text[languages::steps_text_id::please_input_password],
-			steps_text_id_to_text[languages::steps_text_id::password_not_set],
-			wxICON_EXCLAMATION, this);
-		return false;
-	}
-
-	return true;
+	m_spinCtrl_sbs_s3_fec_data->SetToolTip(setting_options_id_to_text[languages::setting_options_id::fec_data]);
+	m_spinCtrl_sbs_s3_fec_redundant->SetToolTip(setting_options_id_to_text[languages::setting_options_id::fec_redundant]);
 }
 
 void KCPTubeGeneratorStepByStep::CreateUserSettingFile()
@@ -233,35 +226,42 @@ void KCPTubeGeneratorStepByStep::CreateUserSettingFile()
 
 	if (m_checkBox_sbs_s3_mtu->IsChecked() && m_spinCtrl_sbs_s3_mtu->GetValue() > 0)
 	{
-		wxString mtu_value = std::to_string(m_spinCtrl_sbs_s3_mtu->GetValue());
-		client_settings += ("kcp_mtu=" + mtu_value + "\n");
-		server_settings += ("kcp_mtu=" + mtu_value + "\n");
+		wxString mtu_value = m_spinCtrl_sbs_s3_mtu->GetTextValue();
+		client_settings += ("mtu=" + mtu_value + "\n");
+		server_settings += ("mtu=" + mtu_value + "\n");
 	}
 
 	if (m_checkBox_sbs_s3_dport_refresh->IsChecked() && m_spinCtrl_sbs_s3_dportre_fresh->GetValue() > 0)
 	{
-		wxString dport_refresh = std::to_string(m_spinCtrl_sbs_s3_dportre_fresh->GetValue());
+		wxString dport_refresh = m_spinCtrl_sbs_s3_dportre_fresh->GetTextValue();
 		client_settings += ("dport_refresh=" + dport_refresh + "\n");
 	}
 
 	if (m_checkBox_sbs_s3_udp_timtout->IsChecked() && m_spinCtrl_sbs_s3_udp_timeout->GetValue() > 0)
 	{
-		wxString udp_timeout = std::to_string(m_spinCtrl_sbs_s3_udp_timeout->GetValue());
+		wxString udp_timeout = m_spinCtrl_sbs_s3_udp_timeout->GetTextValue();
 		client_settings += ("udp_timeout=" + udp_timeout + "\n");
 		server_settings += ("udp_timeout=" + udp_timeout + "\n");
 	}
 
 	if (m_checkBox_sbs_s3_keepalive->IsChecked() && m_spinCtrl_sbs_s3_keepalive->GetValue() > 0)
 	{
-		wxString keep_alive = std::to_string(m_spinCtrl_sbs_s3_keepalive->GetValue());
+		wxString keep_alive = m_spinCtrl_sbs_s3_keepalive->GetTextValue();
 		client_settings += ("keep_alive=" + keep_alive + "\n");
 		server_settings += ("keep_alive=" + keep_alive + "\n");
 	}
 
 	if (m_checkBox_sbs_s3_mux_tunnels->IsChecked() && m_spinCtrl_sbs_s3_mux_tunnels->GetValue() > 0)
 	{
-		wxString mux_tunnels = std::to_string(m_spinCtrl_sbs_s3_mux_tunnels->GetValue());
+		wxString mux_tunnels = m_spinCtrl_sbs_s3_mux_tunnels->GetTextValue();
 		client_settings += ("mux_tunnels=" + mux_tunnels + "\n");
+	}
+
+	if (m_checkBox_sbs_s3_fec->IsChecked())
+	{
+		wxString fec_setting = m_spinCtrl_sbs_s3_fec_data->GetTextValue() + ":" + m_spinCtrl_sbs_s3_fec_redundant->GetTextValue();
+		client_settings += ("fec=" + fec_setting + "\n");
+		server_settings += ("fec=" + fec_setting + "\n");
 	}
 
 	wxString client_file_path = m_filePicker_sbs_s4_client->GetPath();
@@ -283,4 +283,21 @@ void KCPTubeGeneratorStepByStep::CreateUserSettingFile()
 	}
 
 	wxMessageBox(client_done + "\n" + server_done, "KCPTube Configuration File Generator", wxICON_INFORMATION, this);
+}
+
+void KCPTubeGeneratorStepByStep::AdjustUI()
+{
+	m_checkBox_sbs_s3_mtu->Layout();
+	m_checkBox_sbs_s3_mtu->Fit();
+	m_checkBox_sbs_s3_dport_refresh->Layout();
+	m_checkBox_sbs_s3_dport_refresh->Fit();
+	m_checkBox_sbs_s3_udp_timtout->Layout();
+	m_checkBox_sbs_s3_udp_timtout->Fit();
+	m_checkBox_sbs_s3_keepalive->Layout();
+	m_checkBox_sbs_s3_keepalive->Fit();
+	m_checkBox_sbs_s3_mux_tunnels->Layout();
+	m_checkBox_sbs_s3_mux_tunnels->Fit();
+
+	Layout();
+	Fit();
 }

@@ -95,6 +95,11 @@ class UserInput : public wxDialog
 		wxChoice* m_choice_client_inbound_bandwidth;
 		wxCheckBox* m_checkBox_client_mtu;
 		wxSpinCtrl* m_spinCtrl_client_mtu;
+		wxCheckBox* m_checkBox_client_kcp_mtu;
+		wxSpinCtrl* m_spinCtrl_client_kcp_mtu;
+		wxCheckBox* m_checkBox_client_fec;
+		wxSpinCtrl* m_spinCtrl_client_fec_data;
+		wxSpinCtrl* m_spinCtrl_client_fec_redundant;
 		wxCheckBox* m_checkBox_client_ipv4_only;
 		wxCheckBox* m_checkBox_client_blast;
 		wxStaticBoxSizer* sbSizer_client_log;
@@ -150,6 +155,11 @@ class UserInput : public wxDialog
 		wxSpinCtrl* m_spinCtrl_relay_keep_alive_fc;
 		wxCheckBox* m_checkBox_relay_mtu_fc;
 		wxSpinCtrl* m_spinCtrl_relay_mtu_fc;
+		wxCheckBox* m_checkBox_relay_kcp_mtu_fc;
+		wxSpinCtrl* m_spinCtrl_relay_kcp_mtu_fc;
+		wxCheckBox* m_checkBox_relay_fec_fc;
+		wxSpinCtrl* m_spinCtrl_relay_fec_data_fc;
+		wxSpinCtrl* m_spinCtrl_relay_fec_redundant_fc;
 		wxCheckBox* m_checkBox_relay_ipv4_only_fc;
 		wxCheckBox* m_checkBox_relay_blast_fc;
 		wxPanel* m_panel_relay_network_ts;
@@ -167,6 +177,11 @@ class UserInput : public wxDialog
 		wxSpinCtrl* m_spinCtrl_relay_keep_alive_ts;
 		wxCheckBox* m_checkBox_relay_mtu_ts;
 		wxSpinCtrl* m_spinCtrl_relay_mtu_ts;
+		wxCheckBox* m_checkBox_relay_kcp_mtu_ts;
+		wxSpinCtrl* m_spinCtrl_relay_kcp_mtu_ts;
+		wxCheckBox* m_checkBox_relay_fec_ts;
+		wxSpinCtrl* m_spinCtrl_relay_fec_data_ts;
+		wxSpinCtrl* m_spinCtrl_relay_fec_redundant_ts;
 		wxCheckBox* m_checkBox_relay_ipv4_only_ts;
 		wxCheckBox* m_checkBox_relay_blast_ts;
 		wxStaticBoxSizer* sbSizer_relay_network_settings;
@@ -238,6 +253,11 @@ class UserInput : public wxDialog
 		wxChoice* m_choice_server_inbound_bandwidth;
 		wxCheckBox* m_checkBox_server_mtu;
 		wxSpinCtrl* m_spinCtrl_server_mtu;
+		wxCheckBox* m_checkBox_server_kcp_mtu;
+		wxSpinCtrl* m_spinCtrl_server_kcp_mtu;
+		wxCheckBox* m_checkBox_server_fec;
+		wxSpinCtrl* m_spinCtrl_server_fec_data;
+		wxSpinCtrl* m_spinCtrl_server_fec_redundant;
 		wxCheckBox* m_checkBox_server_ipv4_only;
 		wxCheckBox* m_checkBox_server_blast;
 		wxStaticBoxSizer* sbSizer_server_stun;
@@ -261,6 +281,8 @@ class UserInput : public wxDialog
 		virtual void ClientKeepAliveOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClientMuxTunnelsOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClientMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ClientKCPMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ClientFECOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClientIPv4OnlyOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClientLogPathOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClientVerifyAndSaveOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
@@ -271,12 +293,16 @@ class UserInput : public wxDialog
 		virtual void RelayFromClientUDPTimeoutOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayFromClientKeepAliveOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayFromClientMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void RelayFromClientKCPMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void RelayFromClientFECOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayFromClientIPv4OnlyOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayDestinationPortOnChoice( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayDPortRefreshOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayToServerUDPTimeoutOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayToServerKeepAliveOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayToServerMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void RelayToServerKCPMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void RelayToServerFECOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayToServerIPv4OnlyOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayFromClientEncrypitonOnChoice( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RelayToServerEncrypitonOnChoice( wxCommandEvent& event ) { event.Skip(); }
@@ -287,6 +313,8 @@ class UserInput : public wxDialog
 		virtual void ServerUDPTimeoutOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ServerKeepAliveOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ServerMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ServerKCPMTUOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ServerFECOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ServerIPv4OnlyOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ServerStunServerOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ServerLogPathOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
@@ -387,6 +415,9 @@ class StepByStep : public wxDialog
 		wxSpinCtrl* m_spinCtrl_sbs_s3_keepalive;
 		wxCheckBox* m_checkBox_sbs_s3_mux_tunnels;
 		wxSpinCtrl* m_spinCtrl_sbs_s3_mux_tunnels;
+		wxCheckBox* m_checkBox_sbs_s3_fec;
+		wxSpinCtrl* m_spinCtrl_sbs_s3_fec_data;
+		wxSpinCtrl* m_spinCtrl_sbs_s3_fec_redundant;
 		wxPanel* m_panel_stepbystep_s4;
 		wxStaticBoxSizer* sbSizer_stepbystep_s4_savefile;
 		wxStaticText* m_staticText_sbs_s4_client;
@@ -402,6 +433,7 @@ class StepByStep : public wxDialog
 		virtual void Step3UDPTimeoutOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void Step3KeepAliveOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void Step3MuxTunnelsOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Step3FECOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void Step4SaveFileOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 
 
